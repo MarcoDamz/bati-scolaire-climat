@@ -1,16 +1,8 @@
----
-title: Bâti scolaire et risques climatiques
-emoji: 🏫
-colorFrom: yellow
-colorTo: red
-sdk: docker
-app_port: 7860
-pinned: false
-license: apache-2.0
-short_description: Exposition des collèges et lycées publics aux aléas climatiques
----
-
 # Bâti scolaire et risques climatiques
+
+[![Open in molab](https://marimo.io/molab-shield.svg)](https://molab.marimo.io/github/MarcoDamz/bati-scolaire-climat/blob/main/demo.py)
+
+Tableau de bord : https://marcodamz.github.io/bati-scolaire-climat/
 
 Croise l'exposition des collèges et lycées publics français aux aléas climatiques
 (chaleur chronique, inondation fluviale), calculée avec
@@ -25,11 +17,22 @@ climatique va aggraver un bâti peu ou pas rénové.
 ## Architecture
 
 ```
-Pipeline Dagster (local ou GitHub Actions)              Space Hugging Face (Docker)
-etablissements ─┐                                        demo.py (marimo run)
-renovations ────┴─ etablissements_enrichis ─ aleas ─ scores ─ resultats_parquet ─ publication_hf ─▶ Dataset HF ─▶ lu par la démo
-                                              └ check : aleas_completes
+GitHub Actions (workflow « pipeline »)
+  Dagster : etablissements ─┐
+            renovations ────┴─ etablissements_enrichis ─ aleas ─ scores ─ resultats_parquet
+                                                          └ check : aleas_completes
+  marimo export html demo.py ─▶ GitHub Pages : index.html (tableau de bord figé) + resultats.parquet
+                                                   │
+molab (« Open in molab ») : demo.py interactif ◀──┘ lit resultats.parquet publié
 ```
+
+Deux niveaux de lecture, sans serveur à payer :
+
+- **Tableau de bord** (GitHub Pages) : page statique aux paramètres par défaut. La carte
+  reste interactive (zoom, survol) ; les réglages sont figés.
+- **Exploration** (molab) : le même notebook, exécuté dans le cloud gratuit de marimo, avec
+  les curseurs actifs et le code visible. `demo.py` déclare ses dépendances en en-tête
+  (PEP 723), dont `batiscol` installé depuis ce dépôt.
 
 | Asset Dagster | Rôle | Source |
 |---|---|---|
@@ -37,7 +40,8 @@ renovations ────┴─ etablissements_enrichis ─ aleas ─ scores ─ 
 | `renovations` | Dernière opération de travaux par UAI (optionnel) | Opérations de construction/rénovation des lycées franciliens (data.gouv.fr) — pilote IDF |
 | `aleas` | Jours de forte chaleur, crue centennale | physrisk-lib : `days_tas/above/{25,30}c` (OSC, CMIP6 0,25°) et profondeur de crue TU Delft (Europe, 100 m) |
 | `scores` | Indice transparent et paramétrable | `batiscol.scoring` |
-| `resultats_parquet` / `publication_hf` | Fichier lu par la démo, publié sur un dataset HF | |
+| `resultats_parquet` | Fichier lu par le tableau de bord | |
+| `publication_hf` | Copie optionnelle sur un dataset Hugging Face (ignorée sans `HF_DATASET_REPO`) | |
 
 La logique métier vit dans des fonctions pures (`batiscol.etablissements`, `renovations`,
 `hazards`, `scoring`) ; `batiscol.definitions` ne fait que les orchestrer. La démo marimo
@@ -68,14 +72,15 @@ Les données d'aléas sont lues anonymement sur le bucket S3 public `os-climate-
 
 ## Déploiement
 
-Dans GitHub (Settings → Secrets and variables → Actions) : secret `HF_TOKEN` (jeton en
-écriture), variables `HF_SPACE_REPO` (ex. `utilisateur/bati-scolaire-climat`) et
-`HF_DATASET_REPO` (ex. `utilisateur/bati-scolaire-climat-data`). Dans le Space : variable
-`HF_DATASET_REPO`.
+1. Dépôt **public** (requis pour GitHub Pages gratuit et pour l'ouverture dans molab).
+2. Settings → Pages → Source : **GitHub Actions**.
+3. Actions → **pipeline** → Run workflow.
 
 - `ci.yml` : tests, validation des définitions Dagster, `marimo check`.
-- `sync-hf-space.yml` : pousse le dépôt sur le Space (SDK Docker) à chaque push sur `main`.
-- `pipeline.yml` : matérialisation Dagster à la demande, publication sur le dataset.
+- `pipeline.yml` : matérialisation Dagster, export statique du notebook, déploiement Pages.
+
+Optionnel : secret `HF_TOKEN` et variable `HF_DATASET_REPO` pour publier aussi les résultats
+sur un dataset Hugging Face.
 
 ## Méthode du score (v0)
 

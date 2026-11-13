@@ -1,3 +1,13 @@
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#     "marimo",
+#     "pandas>=2.2",
+#     "pyarrow>=15",
+#     "plotly>=5.24",
+#     "batiscol @ git+https://github.com/MarcoDamz/bati-scolaire-climat",
+# ]
+# ///
 import marimo
 
 __generated_with = "0.25.2"
@@ -33,15 +43,26 @@ def _(mo):
 
 
 @app.cell
-def _(os, pd):
-    def charger():
-        chemin = os.environ.get("RESULTS_PATH")
-        if not chemin and os.environ.get("HF_DATASET_REPO"):
-            from huggingface_hub import hf_hub_download
+def _(os):
+    # Export statique (GitHub Pages) : pas de Python côté visiteur, les réglages sont figés.
+    STATIQUE = os.environ.get("BATISCOL_STATIQUE") == "1"
+    DEPOT = "https://github.com/MarcoDamz/bati-scolaire-climat"
+    MOLAB = "https://molab.marimo.io/github/MarcoDamz/bati-scolaire-climat/blob/main/demo.py"
+    # Résultats publiés par le workflow « pipeline » à côté de la page
+    URL_RESULTATS = "https://marcodamz.github.io/bati-scolaire-climat/resultats.parquet"
+    return DEPOT, MOLAB, STATIQUE, URL_RESULTATS
 
-            chemin = hf_hub_download(os.environ["HF_DATASET_REPO"], "resultats.parquet", repo_type="dataset")
-        chemin = chemin or "data/resultats.parquet"
-        return pd.read_parquet(chemin) if os.path.exists(chemin) else None
+
+@app.cell
+def _(URL_RESULTATS, os, pd):
+    def charger():
+        chemin = os.environ.get("RESULTS_PATH") or "data/resultats.parquet"
+        if os.path.exists(chemin):
+            return pd.read_parquet(chemin)
+        try:  # molab ou poste sans données locales : version publiée
+            return pd.read_parquet(URL_RESULTATS)
+        except Exception:  # noqa: BLE001
+            return None
 
     brut = charger()
     return (brut,)
@@ -54,8 +75,7 @@ def _(brut, mo):
         mo.callout(
             mo.md(
                 "Aucun résultat trouvé. Matérialisez le pipeline "
-                "(`dagster dev -m batiscol.definitions`), puis définissez `RESULTS_PATH` "
-                "ou `HF_DATASET_REPO`."
+                "(`dagster dev -m batiscol.definitions`) ou définissez `RESULTS_PATH`."
             ),
             kind="warn",
         ),
@@ -70,18 +90,13 @@ def _(brut, mo):
 @app.cell
 def _(brut, mo):
     TOUS = "Toutes"
+    # Valeurs par défaut = paramètres de la méthode (ParametresScore)
     region = mo.ui.dropdown([TOUS, *sorted(brut["region"].dropna().unique())], value=TOUS, label="Région")
     type_etab = mo.ui.dropdown([TOUS, *sorted(brut["type"].dropna().unique())], value=TOUS, label="Type")
     renov_connues = mo.ui.checkbox(label="Seulement rénovations connues")
     poids_chaleur = mo.ui.slider(0, 1, step=0.05, value=0.6, label="Poids chaleur (inondation = 1 − poids)")
     seuil_chaleur = mo.ui.dropdown({"25 °C": 25, "30 °C": 30}, value="25 °C", label="Seuil de température moyenne")
     annee_recente = mo.ui.slider(1995, 2025, step=1, value=2010, label="Rénovation « récente » à partir de")
-    mo.vstack(
-        [
-            mo.hstack([region, type_etab, renov_connues], justify="start"),
-            mo.hstack([poids_chaleur, seuil_chaleur, annee_recente], justify="start"),
-        ]
-    )
     return (
         TOUS,
         annee_recente,
@@ -91,6 +106,41 @@ def _(brut, mo):
         seuil_chaleur,
         type_etab,
     )
+
+
+@app.cell
+def _(
+    DEPOT,
+    MOLAB,
+    STATIQUE,
+    annee_recente,
+    mo,
+    poids_chaleur,
+    region,
+    renov_connues,
+    seuil_chaleur,
+    type_etab,
+):
+    if STATIQUE:
+        _sortie = mo.callout(
+            mo.md(
+                f"Version statique, calculée avec les paramètres par défaut : poids chaleur "
+                f"**{poids_chaleur.value}**, seuil **{seuil_chaleur.selected_key}**, rénovation "
+                f"récente à partir de **{annee_recente.value}**. "
+                f"[Ouvrir dans molab]({MOLAB}) pour modifier les réglages et lire le code, "
+                f"ou consulter le [dépôt GitHub]({DEPOT}) pour le pipeline complet."
+            ),
+            kind="info",
+        )
+    else:
+        _sortie = mo.vstack(
+            [
+                mo.hstack([region, type_etab, renov_connues], justify="start"),
+                mo.hstack([poids_chaleur, seuil_chaleur, annee_recente], justify="start"),
+            ]
+        )
+    _sortie
+    return
 
 
 @app.cell

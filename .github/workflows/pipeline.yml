@@ -1,4 +1,6 @@
 name: pipeline
+# Calcule les résultats avec Dagster, puis publie le tableau de bord statique
+# (export HTML du notebook marimo) et resultats.parquet sur GitHub Pages.
 on:
   workflow_dispatch:
     inputs:
@@ -11,8 +13,18 @@ on:
       year:
         description: "Horizon chaleur (2030, 2040, 2050)"
         default: "2050"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
-  run:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -20,7 +32,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -e ".[pipeline]"
+      - run: pip install -e ".[pipeline,demo]"
       - name: Matérialisation Dagster
         env:
           DAGSTER_HOME: ${{ runner.temp }}/dagster
@@ -28,10 +40,26 @@ jobs:
           HF_DATASET_REPO: ${{ vars.HF_DATASET_REPO }}
         run: |
           mkdir -p "$DAGSTER_HOME"
-          REGION='${{ inputs.region }}'
-          CONFIG=$(python -c "import json,sys; r=sys.argv[1] or None; print(json.dumps({'resources': {'parametres': {'config': {'region': r, 'scenario_chaleur': sys.argv[2], 'annee_chaleur': int(sys.argv[3])}}}}))" "$REGION" '${{ inputs.scenario }}' '${{ inputs.year }}')
+          CONFIG=$(python -c "import json,sys; r=sys.argv[1] or None; print(json.dumps({'resources': {'parametres': {'config': {'region': r, 'scenario_chaleur': sys.argv[2], 'annee_chaleur': int(sys.argv[3])}}}}))" '${{ inputs.region }}' '${{ inputs.scenario }}' '${{ inputs.year }}')
           dagster asset materialize -m batiscol.definitions --select '*' --config-json "$CONFIG"
-      - uses: actions/upload-artifact@v4
+      - name: Export statique du tableau de bord
+        env:
+          RESULTS_PATH: data/resultats.parquet
+          BATISCOL_STATIQUE: "1"
+        run: |
+          mkdir -p site
+          marimo export html demo.py -o site/index.html
+          cp data/resultats.parquet site/
+      - uses: actions/upload-pages-artifact@v3
         with:
-          name: resultats
-          path: data/resultats.parquet
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
