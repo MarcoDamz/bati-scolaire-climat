@@ -1,0 +1,37 @@
+name: pipeline
+on:
+  workflow_dispatch:
+    inputs:
+      region:
+        description: "Code région INSEE (11 = Île-de-France ; vide = France entière)"
+        default: "11"
+      scenario:
+        description: "Scénario chaleur (ssp126, ssp245, ssp585)"
+        default: "ssp245"
+      year:
+        description: "Horizon chaleur (2030, 2040, 2050)"
+        default: "2050"
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[pipeline]"
+      - name: Matérialisation Dagster
+        env:
+          DAGSTER_HOME: ${{ runner.temp }}/dagster
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_DATASET_REPO: ${{ vars.HF_DATASET_REPO }}
+        run: |
+          mkdir -p "$DAGSTER_HOME"
+          REGION='${{ inputs.region }}'
+          CONFIG=$(python -c "import json,sys; r=sys.argv[1] or None; print(json.dumps({'resources': {'parametres': {'config': {'region': r, 'scenario_chaleur': sys.argv[2], 'annee_chaleur': int(sys.argv[3])}}}}))" "$REGION" '${{ inputs.scenario }}' '${{ inputs.year }}')
+          dagster asset materialize -m batiscol.definitions --select '*' --config-json "$CONFIG"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: resultats
+          path: data/resultats.parquet

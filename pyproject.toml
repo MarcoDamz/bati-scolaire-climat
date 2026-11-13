@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "batiscol"
+version = "0.2.0"
+description = "Exposition des collèges et lycées publics aux aléas climatiques (physrisk-lib)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+dependencies = ["pandas>=2.2", "pyarrow>=15", "numpy>=1.26", "requests>=2.32"]
+
+[project.optional-dependencies]
+pipeline = ["physrisk-lib>=1.11", "dagster>=1.10", "huggingface_hub>=0.25"]
+demo = ["marimo>=0.20", "plotly>=5.24", "huggingface_hub>=0.25"]
+dev = ["pytest>=8", "dagster-webserver>=1.10"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.dagster]
+module_name = "batiscol.definitions"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

@@ -1,0 +1,139 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.25.2",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "72fa32ea3f7fce8b48ce9ff6489df1b3",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "7cc9f0228d9fe8041f6917e53e4a7d4f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"bati-scolaire-et-risques-climatiques\">B\u00e2ti scolaire et risques climatiques</h1>\n<span class=\"paragraph\">Exposition des coll\u00e8ges et lyc\u00e9es publics \u00e0 la chaleur chronique et aux crues,\ncalcul\u00e9e avec <a href=\"https://github.com/os-climate/physrisk\" rel=\"noopener noreferrer\" target=\"_blank\">physrisk-lib</a> (OS-Climate / FINOS),\npond\u00e9r\u00e9e par l'anciennet\u00e9 de la derni\u00e8re r\u00e9novation connue.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "8d7a72e178e93474ab77c5a225be90dd",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "27054fcbe4e7bdc3fcda00c9dccbc456",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Sc\u00e9narios : chaleur <strong>ssp245 2050</strong>, inondation <strong>rcp4p5 2085</strong></span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "80957f32a648ea5776bd1f8c50b78dae",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><div style='display: flex;flex: 1;flex-direction: row;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-ui-element object-id='lEQa-0' random-id='29a440bf-7aef-30a1-f238-da31193aa4fb'><marimo-dropdown data-initial-value='[&quot;Toutes&quot;]' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eR\u00e9gion&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;Toutes&quot;,&quot;\u00cele-de-France&quot;]' data-allow-select-none='false' data-searchable='false' data-full-width='false' data-disabled='false'></marimo-dropdown></marimo-ui-element><marimo-ui-element object-id='lEQa-1' random-id='99d16616-73f7-0be8-fdc1-70bfdb9e3005'><marimo-dropdown data-initial-value='[&quot;Toutes&quot;]' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eType&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;Toutes&quot;,&quot;Coll\u00e8ge&quot;,&quot;Lyc\u00e9e&quot;]' data-allow-select-none='false' data-searchable='false' data-full-width='false' data-disabled='false'></marimo-dropdown></marimo-ui-element><marimo-ui-element object-id='lEQa-2' random-id='f4ecd034-8825-d798-a42c-3fc8341e2f16'><marimo-checkbox data-initial-value='false' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eSeulement r\u00e9novations connues&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-disabled='false'></marimo-checkbox></marimo-ui-element></div><div style='display: flex;flex: 1;flex-direction: row;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-ui-element object-id='lEQa-3' random-id='235e0e46-23b8-527e-e60f-4dcb4db451bf'><marimo-slider data-initial-value='0.6' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003ePoids chaleur (inondation = 1 \u2212 poids)&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-start='0' data-stop='1' data-step='0.05' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element><marimo-ui-element object-id='lEQa-4' random-id='dcad2c8f-a61a-df5e-106b-73942c38da99'><marimo-dropdown data-initial-value='[&quot;25 \u00b0C&quot;]' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eSeuil de temp\u00e9rature moyenne&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-options='[&quot;25 \u00b0C&quot;,&quot;30 \u00b0C&quot;]' data-allow-select-none='false' data-searchable='false' data-full-width='false' data-disabled='false'></marimo-dropdown></marimo-ui-element><marimo-ui-element object-id='lEQa-5' random-id='3b2c249e-4584-14a1-0bba-e6af2729fab9'><marimo-slider data-initial-value='2010' data-label='&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eR\u00e9novation \u00ab r\u00e9cente \u00bb \u00e0 partir de&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;' data-start='1995' data-stop='2025' data-step='1' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element></div></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "5c8a559b4f98a31459bb7cad78b666b0",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "ec3de62808f3d09c73dde6b42dfeb5d1",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: row;justify-content: space-between;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-stat data-value='3' data-label='&quot;\u00c9tablissements&quot;' data-bordered='false' data-target_direction='&quot;increase&quot;'></marimo-stat><marimo-stat data-value='&quot;30.0&quot;' data-label='&quot;Score m\u00e9dian&quot;' data-bordered='false' data-target_direction='&quot;increase&quot;'></marimo-stat><marimo-stat data-value='&quot;67%&quot;' data-label='&quot;R\u00e9novations connues&quot;' data-bordered='false' data-target_direction='&quot;increase&quot;'></marimo-stat><marimo-stat data-value='1' data-label='&quot;En zone de crue centennale&quot;' data-bordered='false' data-target_direction='&quot;increase&quot;'></marimo-stat></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "4b452f3ba345813c5f6d595dc065a261",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-plotly data-figure='{&quot;data&quot;:[{&quot;customdata&quot;:[[&quot;Saint-Denis&quot;,55.2,48.93,2.36],[&quot;Paris&quot;,30.0,48.86,2.36],[&quot;Paris&quot;,9.0,48.85,2.35]],&quot;hovertemplate&quot;:&quot;&#92;u003cb&#92;u003e%{hovertext}&#92;u003c/b&#92;u003e&#92;u003cbr&#92;u003e&#92;u003cbr&#92;u003escore=%{marker.color}&#92;u003cbr&#92;u003ecommune=%{customdata[0]}&#92;u003cextra&#92;u003e&#92;u003c/extra&#92;u003e&quot;,&quot;hovertext&quot;:[&quot;Lyc\u00e9e C&quot;,&quot;Coll\u00e8ge B&quot;,&quot;Lyc\u00e9e A&quot;],&quot;lat&quot;:{&quot;dtype&quot;:&quot;f8&quot;,&quot;bdata&quot;:&quot;16NwPQp3SECuR+F6FG5IQM3MzMzMbEhA&quot;},&quot;legendgroup&quot;:&quot;&quot;,&quot;lon&quot;:{&quot;dtype&quot;:&quot;f8&quot;,&quot;bdata&quot;:&quot;4XoUrkfhAkDhehSuR+ECQM3MzMzMzAJA&quot;},&quot;marker&quot;:{&quot;color&quot;:{&quot;dtype&quot;:&quot;f8&quot;,&quot;bdata&quot;:&quot;mpmZmZmZS0AAAAAAAAA+QAAAAAAAACJA&quot;},&quot;coloraxis&quot;:&quot;coloraxis&quot;,&quot;size&quot;:{&quot;dtype&quot;:&quot;f8&quot;,&quot;bdata&quot;:&quot;mpmZmZmZS0AAAAAAAAA+QAAAAAAAACJA&quot;},&quot;sizemode&quot;:&quot;area&quot;,&quot;sizeref&quot;:0.2816326530612245},&quot;mode&quot;:&quot;markers&quot;,&quot;name&quot;:&quot;&quot;,&quot;showlegend&quot;:false,&quot;subplot&quot;:&quot;map&quot;,&quot;type&quot;:&quot;scattermap&quot;}],&quot;layout&quot;:{&quot;template&quot;:{&quot;data&quot;:{&quot;histogram2dcontour&quot;:[{&quot;type&quot;:&quot;histogram2dcontour&quot;,&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;},&quot;colorscale&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]]}],&quot;choropleth&quot;:[{&quot;type&quot;:&quot;choropleth&quot;,&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}}],&quot;histogram2d&quot;:[{&quot;type&quot;:&quot;histogram2d&quot;,&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;},&quot;colorscale&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]]}],&quot;heatmap&quot;:[{&quot;type&quot;:&quot;heatmap&quot;,&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;},&quot;colorscale&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]]}],&quot;contourcarpet&quot;:[{&quot;type&quot;:&quot;contourcarpet&quot;,&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}}],&quot;contour&quot;:[{&quot;type&quot;:&quot;contour&quot;,&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;},&quot;colorscale&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]]}],&quot;surface&quot;:[{&quot;type&quot;:&quot;surface&quot;,&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;},&quot;colorscale&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]]}],&quot;mesh3d&quot;:[{&quot;type&quot;:&quot;mesh3d&quot;,&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}}],&quot;scatter&quot;:[{&quot;fillpattern&quot;:{&quot;fillmode&quot;:&quot;overlay&quot;,&quot;size&quot;:10,&quot;solidity&quot;:0.2},&quot;type&quot;:&quot;scatter&quot;}],&quot;parcoords&quot;:[{&quot;type&quot;:&quot;parcoords&quot;,&quot;line&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}}}],&quot;scatterpolargl&quot;:[{&quot;type&quot;:&quot;scatterpolargl&quot;,&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}}}],&quot;bar&quot;:[{&quot;error_x&quot;:{&quot;color&quot;:&quot;#2a3f5f&quot;},&quot;error_y&quot;:{&quot;color&quot;:&quot;#2a3f5f&quot;},&quot;marker&quot;:{&quot;line&quot;:{&quot;color&quot;:&quot;#E5ECF6&quot;,&quot;width&quot;:0.5},&quot;pattern&quot;:{&quot;fillmode&quot;:&quot;overlay&quot;,&quot;size&quot;:10,&quot;solidity&quot;:0.2}},&quot;type&quot;:&quot;bar&quot;}],&quot;scattergeo&quot;:[{&quot;type&quot;:&quot;scattergeo&quot;,&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}}}],&quot;scatterpolar&quot;:[{&quot;type&quot;:&quot;scatterpolar&quot;,&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}}}],&quot;histogram&quot;:[{&quot;marker&quot;:{&quot;pattern&quot;:{&quot;fillmode&quot;:&quot;overlay&quot;,&quot;size&quot;:10,&quot;solidity&quot;:0.2}},&quot;type&quot;:&quot;histogram&quot;}],&quot;scattergl&quot;:[{&quot;type&quot;:&quot;scattergl&quot;,&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}}}],&quot;scatter3d&quot;:[{&quot;type&quot;:&quot;scatter3d&quot;,&quot;line&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}}}],&quot;scattermap&quot;:[{&quot;type&quot;:&quot;scattermap&quot;,&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}}}],&quot;scatterternary&quot;:[{&quot;type&quot;:&quot;scatterternary&quot;,&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}}}],&quot;scattercarpet&quot;:[{&quot;type&quot;:&quot;scattercarpet&quot;,&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}}}],&quot;carpet&quot;:[{&quot;aaxis&quot;:{&quot;endlinecolor&quot;:&quot;#2a3f5f&quot;,&quot;gridcolor&quot;:&quot;white&quot;,&quot;linecolor&quot;:&quot;white&quot;,&quot;minorgridcolor&quot;:&quot;white&quot;,&quot;startlinecolor&quot;:&quot;#2a3f5f&quot;},&quot;baxis&quot;:{&quot;endlinecolor&quot;:&quot;#2a3f5f&quot;,&quot;gridcolor&quot;:&quot;white&quot;,&quot;linecolor&quot;:&quot;white&quot;,&quot;minorgridcolor&quot;:&quot;white&quot;,&quot;startlinecolor&quot;:&quot;#2a3f5f&quot;},&quot;type&quot;:&quot;carpet&quot;}],&quot;table&quot;:[{&quot;cells&quot;:{&quot;fill&quot;:{&quot;color&quot;:&quot;#EBF0F8&quot;},&quot;line&quot;:{&quot;color&quot;:&quot;white&quot;}},&quot;header&quot;:{&quot;fill&quot;:{&quot;color&quot;:&quot;#C8D4E3&quot;},&quot;line&quot;:{&quot;color&quot;:&quot;white&quot;}},&quot;type&quot;:&quot;table&quot;}],&quot;barpolar&quot;:[{&quot;marker&quot;:{&quot;line&quot;:{&quot;color&quot;:&quot;#E5ECF6&quot;,&quot;width&quot;:0.5},&quot;pattern&quot;:{&quot;fillmode&quot;:&quot;overlay&quot;,&quot;size&quot;:10,&quot;solidity&quot;:0.2}},&quot;type&quot;:&quot;barpolar&quot;}],&quot;pie&quot;:[{&quot;automargin&quot;:true,&quot;type&quot;:&quot;pie&quot;}]},&quot;layout&quot;:{&quot;autotypenumbers&quot;:&quot;strict&quot;,&quot;colorway&quot;:[&quot;#636efa&quot;,&quot;#EF553B&quot;,&quot;#00cc96&quot;,&quot;#ab63fa&quot;,&quot;#FFA15A&quot;,&quot;#19d3f3&quot;,&quot;#FF6692&quot;,&quot;#B6E880&quot;,&quot;#FF97FF&quot;,&quot;#FECB52&quot;],&quot;font&quot;:{&quot;color&quot;:&quot;#2a3f5f&quot;},&quot;hovermode&quot;:&quot;closest&quot;,&quot;hoverlabel&quot;:{&quot;align&quot;:&quot;left&quot;},&quot;paper_bgcolor&quot;:&quot;white&quot;,&quot;plot_bgcolor&quot;:&quot;#E5ECF6&quot;,&quot;polar&quot;:{&quot;bgcolor&quot;:&quot;#E5ECF6&quot;,&quot;angularaxis&quot;:{&quot;gridcolor&quot;:&quot;white&quot;,&quot;linecolor&quot;:&quot;white&quot;,&quot;ticks&quot;:&quot;&quot;},&quot;radialaxis&quot;:{&quot;gridcolor&quot;:&quot;white&quot;,&quot;linecolor&quot;:&quot;white&quot;,&quot;ticks&quot;:&quot;&quot;}},&quot;ternary&quot;:{&quot;bgcolor&quot;:&quot;#E5ECF6&quot;,&quot;aaxis&quot;:{&quot;gridcolor&quot;:&quot;white&quot;,&quot;linecolor&quot;:&quot;white&quot;,&quot;ticks&quot;:&quot;&quot;},&quot;baxis&quot;:{&quot;gridcolor&quot;:&quot;white&quot;,&quot;linecolor&quot;:&quot;white&quot;,&quot;ticks&quot;:&quot;&quot;},&quot;caxis&quot;:{&quot;gridcolor&quot;:&quot;white&quot;,&quot;linecolor&quot;:&quot;white&quot;,&quot;ticks&quot;:&quot;&quot;}},&quot;coloraxis&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;colorscale&quot;:{&quot;sequential&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]],&quot;sequentialminus&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]],&quot;diverging&quot;:[[0,&quot;#8e0152&quot;],[0.1,&quot;#c51b7d&quot;],[0.2,&quot;#de77ae&quot;],[0.3,&quot;#f1b6da&quot;],[0.4,&quot;#fde0ef&quot;],[0.5,&quot;#f7f7f7&quot;],[0.6,&quot;#e6f5d0&quot;],[0.7,&quot;#b8e186&quot;],[0.8,&quot;#7fbc41&quot;],[0.9,&quot;#4d9221&quot;],[1,&quot;#276419&quot;]]},&quot;xaxis&quot;:{&quot;gridcolor&quot;:&quot;white&quot;,&quot;linecolor&quot;:&quot;white&quot;,&quot;ticks&quot;:&quot;&quot;,&quot;title&quot;:{&quot;standoff&quot;:15},&quot;zerolinecolor&quot;:&quot;white&quot;,&quot;automargin&quot;:true,&quot;zerolinewidth&quot;:2},&quot;yaxis&quot;:{&quot;gridcolor&quot;:&quot;white&quot;,&quot;linecolor&quot;:&quot;white&quot;,&quot;ticks&quot;:&quot;&quot;,&quot;title&quot;:{&quot;standoff&quot;:15},&quot;zerolinecolor&quot;:&quot;white&quot;,&quot;automargin&quot;:true,&quot;zerolinewidth&quot;:2},&quot;scene&quot;:{&quot;xaxis&quot;:{&quot;backgroundcolor&quot;:&quot;#E5ECF6&quot;,&quot;gridcolor&quot;:&quot;white&quot;,&quot;linecolor&quot;:&quot;white&quot;,&quot;showbackground&quot;:true,&quot;ticks&quot;:&quot;&quot;,&quot;zerolinecolor&quot;:&quot;white&quot;,&quot;gridwidth&quot;:2},&quot;yaxis&quot;:{&quot;backgroundcolor&quot;:&quot;#E5ECF6&quot;,&quot;gridcolor&quot;:&quot;white&quot;,&quot;linecolor&quot;:&quot;white&quot;,&quot;showbackground&quot;:true,&quot;ticks&quot;:&quot;&quot;,&quot;zerolinecolor&quot;:&quot;white&quot;,&quot;gridwidth&quot;:2},&quot;zaxis&quot;:{&quot;backgroundcolor&quot;:&quot;#E5ECF6&quot;,&quot;gridcolor&quot;:&quot;white&quot;,&quot;linecolor&quot;:&quot;white&quot;,&quot;showbackground&quot;:true,&quot;ticks&quot;:&quot;&quot;,&quot;zerolinecolor&quot;:&quot;white&quot;,&quot;gridwidth&quot;:2}},&quot;shapedefaults&quot;:{&quot;line&quot;:{&quot;color&quot;:&quot;#2a3f5f&quot;}},&quot;annotationdefaults&quot;:{&quot;arrowcolor&quot;:&quot;#2a3f5f&quot;,&quot;arrowhead&quot;:0,&quot;arrowwidth&quot;:1},&quot;geo&quot;:{&quot;bgcolor&quot;:&quot;white&quot;,&quot;landcolor&quot;:&quot;#E5ECF6&quot;,&quot;subunitcolor&quot;:&quot;white&quot;,&quot;showland&quot;:true,&quot;showlakes&quot;:true,&quot;lakecolor&quot;:&quot;white&quot;},&quot;title&quot;:{&quot;x&quot;:0.05}}},&quot;map&quot;:{&quot;domain&quot;:{&quot;x&quot;:[0.0,1.0],&quot;y&quot;:[0.0,1.0]},&quot;center&quot;:{},&quot;zoom&quot;:8,&quot;style&quot;:&quot;carto-positron&quot;},&quot;coloraxis&quot;:{&quot;colorbar&quot;:{&quot;title&quot;:{&quot;text&quot;:&quot;score&quot;}},&quot;colorscale&quot;:[[0.0,&quot;rgb(255,255,204)&quot;],[0.125,&quot;rgb(255,237,160)&quot;],[0.25,&quot;rgb(254,217,118)&quot;],[0.375,&quot;rgb(254,178,76)&quot;],[0.5,&quot;rgb(253,141,60)&quot;],[0.625,&quot;rgb(252,78,42)&quot;],[0.75,&quot;rgb(227,26,28)&quot;],[0.875,&quot;rgb(189,0,38)&quot;],[1.0,&quot;rgb(128,0,38)&quot;]],&quot;cmin&quot;:0,&quot;cmax&quot;:100,&quot;autocolorscale&quot;:false},&quot;legend&quot;:{&quot;tracegroupgap&quot;:0,&quot;itemsizing&quot;:&quot;constant&quot;},&quot;margin&quot;:{&quot;t&quot;:0,&quot;l&quot;:0,&quot;r&quot;:0,&quot;b&quot;:0},&quot;height&quot;:560,&quot;dragmode&quot;:&quot;zoom&quot;}}' data-config='{}'></marimo-plotly>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "6381d166844b260cab1c9e9f1932c127",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='BYtC-0' random-id='9948070c-c215-ce60-ebf2-6e2caf4faae0'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;Score&#92;&quot;:55.2,&#92;&quot;&#92;&#92;u00c9tablissement&#92;&quot;:&#92;&quot;Lyc&#92;&#92;u00e9e C&#92;&quot;,&#92;&quot;Type&#92;&quot;:&#92;&quot;Lyc&#92;&#92;u00e9e&#92;&quot;,&#92;&quot;Commune&#92;&quot;:&#92;&quot;Saint-Denis&#92;&quot;,&#92;&quot;Jours Tmoy&#92;u003e25&#92;&#92;u00b0C (hist.)&#92;&quot;:50.0,&#92;&quot;Jours Tmoy&#92;u003e25&#92;&#92;u00b0C (futur)&#92;&quot;:90.0,&#92;&quot;Crue 100 ans (m)&#92;&quot;:0.8,&#92;&quot;Derni&#92;&#92;u00e8re op&#92;&#92;u00e9ration&#92;&quot;:1995.0,&#92;&quot;Nature&#92;&quot;:&#92;&quot;Toiture&#92;&quot;,&#92;&quot;UAI&#92;&quot;:&#92;&quot;0930003C&#92;&quot;},{&#92;&quot;Score&#92;&quot;:30.0,&#92;&quot;&#92;&#92;u00c9tablissement&#92;&quot;:&#92;&quot;Coll&#92;&#92;u00e8ge B&#92;&quot;,&#92;&quot;Type&#92;&quot;:&#92;&quot;Coll&#92;&#92;u00e8ge&#92;&quot;,&#92;&quot;Commune&#92;&quot;:&#92;&quot;Paris&#92;&quot;,&#92;&quot;Jours Tmoy&#92;u003e25&#92;&#92;u00b0C (hist.)&#92;&quot;:40.0,&#92;&quot;Jours Tmoy&#92;u003e25&#92;&#92;u00b0C (futur)&#92;&quot;:72.0,&#92;&quot;Crue 100 ans (m)&#92;&quot;:0.0,&#92;&quot;Derni&#92;&#92;u00e8re op&#92;&#92;u00e9ration&#92;&quot;:NaN,&#92;&quot;Nature&#92;&quot;:NaN,&#92;&quot;UAI&#92;&quot;:&#92;&quot;0750002B&#92;&quot;},{&#92;&quot;Score&#92;&quot;:9.0,&#92;&quot;&#92;&#92;u00c9tablissement&#92;&quot;:&#92;&quot;Lyc&#92;&#92;u00e9e A&#92;&quot;,&#92;&quot;Type&#92;&quot;:&#92;&quot;Lyc&#92;&#92;u00e9e&#92;&quot;,&#92;&quot;Commune&#92;&quot;:&#92;&quot;Paris&#92;&quot;,&#92;&quot;Jours Tmoy&#92;u003e25&#92;&#92;u00b0C (hist.)&#92;&quot;:40.0,&#92;&quot;Jours Tmoy&#92;u003e25&#92;&#92;u00b0C (futur)&#92;&quot;:72.0,&#92;&quot;Crue 100 ans (m)&#92;&quot;:0.0,&#92;&quot;Derni&#92;&#92;u00e8re op&#92;&#92;u00e9ration&#92;&quot;:2018.0,&#92;&quot;Nature&#92;&quot;:&#92;&quot;R&#92;&#92;u00e9novation &#92;&#92;u00e9nerg&#92;&#92;u00e9tique&#92;&quot;,&#92;&quot;UAI&#92;&quot;:&#92;&quot;0750001A&#92;&quot;}]&quot;' data-total-rows='3' data-total-columns='10' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='false' data-page-size='15' data-field-types='[[&quot;Score&quot;,[&quot;number&quot;,&quot;float64&quot;]],[&quot;\u00c9tablissement&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;Type&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;Commune&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;Jours Tmoy&#92;u003e25\u00b0C (hist.)&quot;,[&quot;number&quot;,&quot;float64&quot;]],[&quot;Jours Tmoy&#92;u003e25\u00b0C (futur)&quot;,[&quot;number&quot;,&quot;float64&quot;]],[&quot;Crue 100 ans (m)&quot;,[&quot;number&quot;,&quot;float64&quot;]],[&quot;Derni\u00e8re op\u00e9ration&quot;,[&quot;number&quot;,&quot;float64&quot;]],[&quot;Nature&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;UAI&quot;,[&quot;string&quot;,&quot;str&quot;]]]' data-show-filters='true' data-show-download='true' data-show-search='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-hidden-columns='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "dbc6969045f3209d36fe6826344de547",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-accordion data-labels='[&quot;&#92;u003cspan class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&#92;u003e&#92;u003cspan class=&#92;&quot;paragraph&#92;&quot;&#92;u003eM\u00e9thode et limites&#92;u003c/span&#92;u003e&#92;u003c/span&#92;u003e&quot;]' data-multiple='false' data-expanded='[]'><div><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Score</strong> = 100 \u00d7 vuln\u00e9rabilit\u00e9 \u00d7 (poids chaleur \u00d7 exposition chaleur</span>\n<ul>\n<li>poids inondation \u00d7 exposition inondation).</li>\n<li><em>Exposition chaleur</em> : rang centile, dans la s\u00e9lection, du nombre de jours par an\n  o\u00f9 la temp\u00e9rature moyenne d\u00e9passe le seuil (physrisk-lib, CMIP6, 0,25\u00b0).</li>\n<li><em>Exposition inondation</em> : hauteur d'eau d'une crue fluviale centennale sans\n  protection (TU Delft, 100 m), plafonn\u00e9e \u00e0 1 m.</li>\n<li><em>Vuln\u00e9rabilit\u00e9</em> : 0,3 si r\u00e9novation r\u00e9cente, 0,6 si interm\u00e9diaire (\u2265 1990),\n  1,0 si ancienne ou inconnue.</li>\n</ul>\n<span class=\"paragraph\"><strong>Ce que le score ne mesure pas</strong> : l'\u00e9tat r\u00e9el des b\u00e2timents (sanitaires,\ntoitures, moisissures). Un score \u00e9lev\u00e9 signale un \u00e9tablissement \u00e0 examiner.</span>\n<span class=\"paragraph\"><strong>Limites</strong> : un seul mod\u00e8le climatique, pas d'effet d'\u00eelot de chaleur urbain,\nhistorique des r\u00e9novations disponible seulement pour le pilote \u00cele-de-France.</span></span></div></marimo-accordion>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}
