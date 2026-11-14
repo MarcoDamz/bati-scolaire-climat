@@ -189,7 +189,7 @@ def _(df, mo):
 
 
 @app.cell
-def _(df, px):
+def _(df, mo, px):
     carte = px.scatter_map(
         df, lat="latitude", lon="longitude", color="score", size=df["score"].clip(lower=1),
         color_continuous_scale="YlOrRd", range_color=(0, 100), size_max=14, zoom=8,
@@ -197,7 +197,12 @@ def _(df, px):
         map_style="carto-positron", height=560,
     )
     carte.update_layout(margin=dict(l=0, r=0, t=0, b=0))
-    carte
+    # Rendu dans un iframe avec son propre plotly.js : le composant Plotly de marimo
+    # déclenche « Style is not done loading » avec les cartes MapLibre (scatter_map).
+    mo.iframe(
+        carte.to_html(include_plotlyjs="cdn", full_html=True, config={"scrollZoom": True}),
+        height="580px",
+    )
     return
 
 
