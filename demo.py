@@ -4,7 +4,7 @@
 #     "marimo",
 #     "pandas>=2.2",
 #     "pyarrow>=15",
-#     "plotly>=5.24",
+#     "folium>=0.17",
 #     "batiscol @ git+https://github.com/MarcoDamz/bati-scolaire-climat",
 # ]
 # ///
@@ -23,11 +23,12 @@ def _():
 
     import marimo as mo
     import pandas as pd
-    import plotly.express as px
+    import folium
+    from branca.colormap import LinearColormap
 
     from batiscol.scoring import ParametresScore, calculer_score
 
-    return ParametresScore, calculer_score, mo, os, pd, px
+    return LinearColormap, ParametresScore, calculer_score, folium, mo, os, pd
 
 
 @app.cell
@@ -189,25 +190,34 @@ def _(df, mo):
 
 
 @app.cell
-def _(df, mo, px):
-    carte = px.scatter_map(
-        df, lat="latitude", lon="longitude", color="score", size=df["score"].clip(lower=1),
-        color_continuous_scale="YlOrRd", range_color=(0, 100), size_max=14, zoom=8,
-        hover_name="nom", hover_data={"commune": True, "score": True, "latitude": False, "longitude": False},
-        map_style="carto-positron", height=560,
+def _(LinearColormap, df, folium, mo):
+    # Leaflet (folium) : rendu fiable dans un export statique, sans WebGL.
+    echelle = LinearColormap(["#ffffb2", "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026"], vmin=0, vmax=100,
+                             caption="Score")
+    carte = folium.Map(
+        location=[df["latitude"].mean(), df["longitude"].mean()],
+        tiles="OpenStreetMap",
+        zoom_start=9,
+        control_scale=True,
     )
-    carte.update_layout(margin=dict(l=0, r=0, t=0, b=0))
-    # Rendu dans un iframe avec son propre plotly.js : le composant Plotly de marimo
-    # déclenche « Style is not done loading » avec les cartes MapLibre (scatter_map).
-    mo.iframe(
-        carte.to_html(include_plotlyjs="cdn", full_html=True, config={"scrollZoom": True}),
-        height="580px",
-    )
+    for _r in df.sort_values("score").itertuples():
+        folium.CircleMarker(
+            location=[_r.latitude, _r.longitude],
+            radius=4 + _r.score / 12,
+            color=echelle(_r.score),
+            fill=True,
+            fill_opacity=0.85,
+            weight=1,
+            tooltip=f"{_r.nom} ({_r.commune}) — score {_r.score:.0f}",
+        ).add_to(carte)
+    echelle.add_to(carte)
+    carte.fit_bounds([[df["latitude"].min(), df["longitude"].min()], [df["latitude"].max(), df["longitude"].max()]])
+    mo.iframe(carte.get_root().render(), height="560px")
     return
 
 
 @app.cell
-def _(df, mo):
+def _(STATIQUE, df, mo):
     colonnes = {
         "score": "Score",
         "nom": "Établissement",
@@ -220,11 +230,26 @@ def _(df, mo):
         "derniere_operation_libelle": "Nature",
         "uai": "UAI",
     }
-    mo.ui.table(
-        df[[c for c in colonnes if c in df.columns]].rename(columns=colonnes).round(1),
-        page_size=15,
-        selection=None,
-    )
+    tableau = df[[c for c in colonnes if c in df.columns]].round(1)
+    if "derniere_operation_annee" in tableau:
+        tableau["derniere_operation_annee"] = tableau["derniere_operation_annee"].astype("Int64").astype(str).replace("<NA>", "–")
+    tableau = tableau.rename(columns=colonnes)
+    if STATIQUE:
+        # mo.ui.table charge ses pages via le kernel : rien ne s'affiche dans un export statique.
+        _sortie = mo.vstack(
+            [
+                mo.md(f"**Les {min(50, len(tableau))} établissements au score le plus élevé**"),
+                mo.Html(
+                    tableau.head(50).to_html(index=False, na_rep="–", border=0)
+                    .replace("<table", '<table style="border-collapse:collapse;font-size:13px;width:100%"')
+                    .replace("<td>", '<td style="padding:4px 8px;border-bottom:1px solid #e5e7eb">')
+                    .replace("<th>", '<th style="padding:4px 8px;text-align:left;border-bottom:2px solid #9ca3af">')
+                ),
+            ]
+        )
+    else:
+        _sortie = mo.ui.table(tableau, page_size=15, selection=None)
+    _sortie
     return
 
 

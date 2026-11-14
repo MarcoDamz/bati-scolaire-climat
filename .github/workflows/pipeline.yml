@@ -48,7 +48,7 @@ jobs:
           BATISCOL_STATIQUE: "1"
         run: |
           mkdir -p site
-          marimo export html demo.py -o site/index.html
+          marimo export html demo.py --no-include-code -o site/index.html
           cp data/resultats.parquet site/
       - name: Résumé
         run: |
