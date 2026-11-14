@@ -158,10 +158,14 @@ def publication_hf(context: dg.AssetExecutionContext, parametres: Parametres, hf
         return dg.MaterializeResult(metadata={"publie": False})
     from huggingface_hub import HfApi
 
-    api = HfApi()
-    api.create_repo(hf.dataset_repo, repo_type="dataset", exist_ok=True)
-    api.upload_file(path_or_fileobj=parametres.sortie, path_in_repo="resultats.parquet",
-                    repo_id=hf.dataset_repo, repo_type="dataset")
+    try:
+        api = HfApi()
+        api.create_repo(hf.dataset_repo, repo_type="dataset", exist_ok=True)
+        api.upload_file(path_or_fileobj=parametres.sortie, path_in_repo="resultats.parquet",
+                        repo_id=hf.dataset_repo, repo_type="dataset")
+    except Exception as err:  # noqa: BLE001 — publication secondaire : ne bloque pas le pipeline
+        context.log.warning(f"Publication Hugging Face impossible ({err}) ; vérifier HF_TOKEN")
+        return dg.MaterializeResult(metadata={"publie": False, "erreur": str(err)[:300]})
     return dg.MaterializeResult(metadata={"publie": True, "dataset": hf.dataset_repo})
 
 

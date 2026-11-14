@@ -50,6 +50,20 @@ jobs:
           mkdir -p site
           marimo export html demo.py -o site/index.html
           cp data/resultats.parquet site/
+      - name: Résumé
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import pandas as pd
+          df = pd.read_parquet("data/resultats.parquet")
+          print(f"### {len(df)} établissements")
+          print(f"- rénovations connues : {(df['donnees_renovation'] == 'connues').sum()}")
+          for c in ["jours_tmoy_sup_25c_futur", "inondation_m_rp100_futur", "score"]:
+              print(f"- {c} : médiane {df[c].median():.2f}, max {df[c].max():.2f}, manquants {df[c].isna().sum()}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: resultats
+          path: data/resultats.parquet
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
