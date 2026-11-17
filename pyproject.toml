@@ -14,10 +14,14 @@ dependencies = ["pandas>=2.2", "pyarrow>=15", "numpy>=1.26", "requests>=2.32"]
 [project.optional-dependencies]
 pipeline = ["physrisk-lib>=1.11", "dagster>=1.10", "huggingface_hub>=0.25"]
 demo = ["marimo>=0.20", "folium>=0.17"]
+adaptation = ["scipy>=1.11", "xarray>=2024.1", "h5netcdf>=1.3", "h5py>=3.10", "fsspec>=2024.2", "aiohttp>=3.9"]
 dev = ["pytest>=8", "dagster-webserver>=1.10"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+adaptation = ["ressources/*.csv"]
 
 [tool.dagster]
 module_name = "batiscol.definitions"
