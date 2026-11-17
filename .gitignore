@@ -7,3 +7,5 @@ data/*
 .env
 __marimo__/
 sortie_instances/_cache/
+sortie_instances/Arrêtés_CatNat.csv
+sortie_instances/Bâtiments_BDNB.csv
