@@ -6,3 +6,4 @@ data/*
 !data/.gitkeep
 .env
 __marimo__/
+sortie_instances/_cache/
