@@ -29,20 +29,40 @@ Variation médiane de la crue décennale journalière (QJXA-10), 67 à 82 simula
 les épisodes orageux de quelques heures, et l'incertitude dépasse le signal. L'évolution de l'aléa inondation y
 sera donc pilotée aussi par les pluies extrêmes (cumul maximal sur 1 jour et sur 5 jours d'Explore2-ADAMONT).
 
-## À faire de votre côté : extraire les projections journalières
+## Source des projections journalières : Socle Métropole (Météo-France, 2025)
 
-Ouvrir `notebooks/01_extraction_explore2.ipynb` dans Google Colab (bouton dans le README) et exécuter les
-cellules dans l'ordre. Le notebook monte Google Drive, récupère le code sur GitHub, vérifie que le serveur du
-CNRM répond, liste les fichiers retenus puis extrait. Tout est écrit dans
-`SaaS adaptation climatique/demo/donnees/explore2/` ; en cas de coupure, relancer : la reprise est automatique.
+Le serveur public du CNRM qui diffusait Explore2-ADAMONT (`climatedata.umr-cnrm.fr` et son miroir
+`climatedata.cnrm-game-meteo.fr`) est injoignable, depuis le cloud comme depuis un poste classique (18/11/2026).
+Source retenue à la place :
+[Projections climatiques Socle Métropole](https://www.data.gouv.fr/datasets/projections-climatiques-pour-le-hackathon-2025-socle-metropole)
+(Météo-France, Licence Ouverte, stockage objet data.gouv, sans compte).
 
-Si le serveur du CNRM refuse aussi Colab (il filtre certains hébergeurs cloud), lancer le même script depuis un
-ordinateur, en écrivant dans le dossier Drive synchronisé :
-`python3 phase1/telecharger_explore2.py --dossier "<Drive>/SaaS adaptation climatique/demo/donnees/explore2"`.
+| | Explore2-ADAMONT (base TRACC 2023) | Socle Métropole (2025) |
+|---|---|---|
+| Génération de modèles | EURO-CORDEX CMIP5 | **EURO-CORDEX CMIP6** (plus récente) |
+| Simulations | 17, RCP8.5 | **17** historiques + SSP3-7.0, dont 4 aussi en SSP5-8.5 |
+| Résolution, correction | 8 km, ADAMONT | 8 km, CDF-t sur ANASTASIA (températures) / SAFRAN |
+| Variables quotidiennes | T, pluie, vent, humidité… | tas, tasmax, tasmin, pr, rsds, rlds, huss, sfcWind |
+| Orages | non résolus | **AROME 2,5 km à convection résolue, pluie horaire** (1 simulation) |
+| Statut | publié | « en cours d'évaluation » selon Météo-France |
 
-Ce que le script extrait : 17 simulations × (historique 1976-2005 + RCP8.5 2006-2100) × variables journalières
-corrigées (températures max/min/moyenne, précipitations, vent moyen, humidité relative, humidité des sols SIM2),
-uniquement aux mailles de 8 km qui contiennent les 228 bâtiments des pilotes.
+Conséquences :
+- **Scénario** : le niveau de réchauffement ne dépend pas du scénario d'émissions ; SSP3-7.0 (17 simulations)
+  remplace RCP8.5 et atteint +4 °C en France avant 2100. Les années TRACC ne sont pas encore fournies pour ce
+  jeu : elles seront calculées par la méthode officielle (niveaux de réchauffement planétaire +1,5 / +2 / +3 °C
+  du modèle global de chaque simulation ↔ +2 / +2,7 / +4 °C en France).
+- **Pas d'humidité des sols ni d'indice feu fournis** : SWI (argiles) à reconstituer (bilan hydrique simplifié,
+  calé sur le SWI observé ouvert de Météo-France « dispositif CatNat ») ; indice feu (IFM) calculé à partir de
+  T, humidité, vent, pluie.
+- Explore2 reste utilisé pour l'hydrologie (débits par niveau TRACC, déjà calculés) ; `phase1/telecharger_explore2.py`
+  est conservé au cas où le serveur du CNRM revienne.
+
+## À faire de votre côté : extraire le Socle Métropole
+
+Ouvrir `notebooks/01_extraction_climat.ipynb` dans Google Colab (bouton dans le README) et exécuter les cellules.
+L'inventaire (étape 3) doit trouver 17 simulations par variable ; sinon envoyer `socle_inventaire.csv`.
+Sortie : `SaaS adaptation climatique/demo/donnees/climat_socle/`. Si Colab est refusé, lancer
+`python3 phase1/telecharger_socle.py --cprcm --dossier "<Drive>/SaaS adaptation climatique/demo/donnees/climat_socle"`.
 
 ## Premiers résultats : tempêtes (C3S, ERA5, 1979-2025, maille 0,25°)
 
