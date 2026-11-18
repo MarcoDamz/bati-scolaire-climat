@@ -2,17 +2,18 @@
 """Extrait les projections climatiques journalières Explore2-2022 (ADAMONT, historique + RCP8.5) aux mailles
 de 8 km qui contiennent les bâtiments des 5 communes pilotes du démonstrateur.
 
-À lancer sur un poste qui accède au serveur public du CNRM (Météo-France) : il refuse les connexions
-venant de l'environnement cloud du démonstrateur. Aucun compte n'est nécessaire.
+Le serveur public du CNRM (Météo-France) ne demande aucun compte, mais filtre certains hébergeurs cloud :
+`tester_acces()` le vérifie avant de commencer.
 
 Installation (Python 3.10 ou plus) :
     pip install xarray h5netcdf h5py netCDF4 fsspec aiohttp requests pandas pyarrow
 
-Utilisation :
-    python3 telecharger_explore2.py --lister      # 1) vérifier ce qui sera téléchargé (quelques minutes)
-    python3 telecharger_explore2.py               # 2) extraire (plusieurs heures ; reprend où il s'est arrêté)
+Utilisation recommandée : Google Colab, notebook notebooks/01_extraction_explore2.ipynb (écrit dans Google Drive).
+En ligne de commande :
+    python3 telecharger_explore2.py --lister --dossier DOSSIER   # 1) vérifier ce qui sera téléchargé
+    python3 telecharger_explore2.py --dossier DOSSIER            # 2) extraire (reprend où il s'est arrêté)
 
-Résultat : explore2_pilotes.parquet (une ligne par maille, chaîne, variable et jour), à déposer sur Google Drive.
+Résultat : DOSSIER/explore2_pilotes.parquet (une ligne par maille, chaîne, variable et jour).
 Seules les mailles des pilotes sont lues : les fichiers nationaux ne sont pas conservés.
 """
 import argparse, io, json, os, re, sys, tempfile, time
@@ -181,58 +182,82 @@ def extraire(url, nom, var, ch, session):
             os.unlink(tmp)
 
 
-def main():
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--lister", action="store_true", help="lister les fichiers retenus sans rien extraire")
-    ap.add_argument("--racine", default=RACINE)
-    ap.add_argument("--sortie", default="explore2_pilotes.parquet")
-    args = ap.parse_args()
+def tester_acces(racine=RACINE, delai=30):
+    """Vérifie que le serveur du CNRM répond depuis cette machine (il filtre certains hébergeurs cloud)."""
+    try:
+        r = requests.get(racine, timeout=delai, headers={"User-Agent": "demonstrateur-adaptation/0.1"})
+        r.raise_for_status()
+        print(f"Serveur CNRM accessible ({r.status_code}).")
+        return True
+    except requests.RequestException as e:
+        print(f"Serveur CNRM inaccessible depuis cette machine : {e}\n"
+              "Il filtre certains hébergeurs cloud. Lancez alors le script depuis un poste classique "
+              "(même commande), en écrivant dans le dossier Google Drive synchronisé.")
+        return False
 
+
+def executer(dossier=".", lister=False, racine=RACINE, nom="explore2_pilotes.parquet"):
+    """Liste puis extrait. Tout est écrit dans `dossier` (ex. un dossier Google Drive monté dans Colab) :
+    la liste des fichiers retenus, un fichier par fichier source traité (reprise après coupure), le Parquet final."""
+    os.makedirs(dossier, exist_ok=True)
+    sortie = os.path.join(dossier, nom)
     s = requests.Session(); s.headers["User-Agent"] = "demonstrateur-adaptation/0.1"
     print("Années pivots TRACC…")
     pivots = charger_pivots(s)
     print(f"  {len(pivots)} chaînes RCP8.5 ADAMONT")
-    print(f"Parcours de {args.racine} …")
-    retenus = selection(parcourir(s, args.racine), pivots)
+    print(f"Parcours de {racine} …")
+    retenus = selection(parcourir(s, racine), pivots)
     bilan = pd.DataFrame(retenus, columns=["url", "fichier", "variable", "chaine"])
     print(f"  {len(bilan)} fichiers retenus")
     if len(bilan):
         print(bilan.groupby(["variable"])["chaine"].nunique().rename("chaînes couvertes").to_string())
-    bilan.to_csv("explore2_fichiers_retenus.csv", index=False)
-    print("  liste détaillée : explore2_fichiers_retenus.csv")
-    if args.lister or bilan.empty:
+    liste = os.path.join(dossier, "explore2_fichiers_retenus.csv")
+    bilan.to_csv(liste, index=False)
+    print(f"  liste détaillée : {liste}")
+    if lister or bilan.empty:
         if bilan.empty:
             print("\nAucun fichier reconnu : envoyez explore2_fichiers_retenus.csv et la sortie de ce script.")
-        return
+        return bilan
 
-    dossier = args.sortie + ".parts"
-    os.makedirs(dossier, exist_ok=True)
-    faits = set(os.listdir(dossier))
+    parts_dir = sortie + ".parts"
+    os.makedirs(parts_dir, exist_ok=True)
+    faits = set(os.listdir(parts_dir))
     t0 = time.time()
-    for i, (url, nom, var, ch) in enumerate(retenus, 1):
-        part = nom.replace(".nc", ".parquet")
+    for i, (url, nomf, var, ch) in enumerate(retenus, 1):
+        part = nomf.replace(".nc", ".parquet")
         if part in faits:
             continue
-        print(f"[{i}/{len(retenus)}] {nom}", flush=True)
+        print(f"[{i}/{len(retenus)}] {nomf}", flush=True)
         for essai in range(3):
             try:
-                df = extraire(url, nom, var, ch, s)
+                df = extraire(url, nomf, var, ch, s)
                 if df is not None:
-                    df.to_parquet(os.path.join(dossier, part), index=False)
+                    tmp = os.path.join(parts_dir, part + ".tmp")
+                    df.to_parquet(tmp, index=False)
+                    os.replace(tmp, os.path.join(parts_dir, part))  # écriture atomique : pas de fichier tronqué
                 break
             except Exception as e:
                 print(f"   ! essai {essai + 1} : {e}")
                 time.sleep(10 * (essai + 1))
-        ecoule = time.time() - t0
-        print(f"   {ecoule / 60:.0f} min écoulées", flush=True)
+        print(f"   {(time.time() - t0) / 60:.0f} min écoulées", flush=True)
 
-    parts = [os.path.join(dossier, p) for p in sorted(os.listdir(dossier)) if p.endswith(".parquet")]
+    parts = [os.path.join(parts_dir, p) for p in sorted(os.listdir(parts_dir)) if p.endswith(".parquet")]
     tout = pd.concat((pd.read_parquet(p) for p in parts), ignore_index=True)
     for c in ("pilote", "maille", "chaine", "variable", "unite", "scenario"):
         tout[c] = tout[c].astype("category")
-    tout.to_parquet(args.sortie, index=False, compression="zstd")
-    taille = os.path.getsize(args.sortie) / 1e6
-    print(f"\nOK → {args.sortie} ({len(tout):,} lignes, {taille:.0f} Mo) : à déposer sur Google Drive.")
+    tout.to_parquet(sortie, index=False, compression="zstd")
+    print(f"\nOK → {sortie} ({len(tout):,} lignes, {os.path.getsize(sortie) / 1e6:.0f} Mo)")
+    return tout
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--lister", action="store_true", help="lister les fichiers retenus sans rien extraire")
+    ap.add_argument("--racine", default=RACINE)
+    ap.add_argument("--dossier", default=".", help="dossier de sortie (ex. dossier Google Drive)")
+    args = ap.parse_args()
+    if tester_acces(args.racine):
+        executer(args.dossier, args.lister, args.racine)
 
 
 if __name__ == "__main__":

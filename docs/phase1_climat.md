@@ -6,9 +6,9 @@
 |---|---|---|
 | Fenêtres TRACC par simulation (17 chaînes Explore2 RCP8.5 ADAMONT, années pivots officielles), agrégation et synthèse d'ensemble (médiane, 10e–90e centiles, écart à 1976-2005) | `src/adaptation/tracc.py` | ✅ testé |
 | Extrêmes : maxima annuels (cumuls sur N jours), loi GEV en super-ensemble (~340 années par niveau) et par chaîne, niveaux de retour 10/30/100/200 ans, fréquence future de l'événement de référence | `src/adaptation/extremes.py` | ✅ testé |
-| Crues : variation du débit journalier maximal annuel et de la crue décennale par niveau, aux stations des pilotes | `src/adaptation/hydro.py` → `resultats/phase1/crues_explore2_tracc.csv` | ✅ calculé |
-| Extraction des projections journalières Explore2-ADAMONT aux mailles des bâtiments pilotes | `phase1/telecharger_explore2.py` | ✅ testé sur un serveur simulé ; **à lancer sur votre poste** |
-| Tempêtes : rafales maximales des tempêtes 1979-2025 aux bâtiments, rafales de retour 10/50/100 ans | `src/adaptation/tempetes.py` → `resultats/phase1/tempetes_*.csv` | ✅ calculé (1 095 tempêtes, 47 ans) |
+| Crues : variation du débit journalier maximal annuel et de la crue décennale par niveau, aux stations des pilotes | `src/adaptation/hydro.py` → Drive `donnees/phase1/crues_explore2_tracc.csv` | ✅ calculé |
+| Extraction des projections journalières Explore2-ADAMONT aux mailles des bâtiments pilotes | `phase1/telecharger_explore2.py`, notebook Colab `notebooks/01_extraction_explore2.ipynb` | ✅ testé sur un serveur simulé ; **à lancer dans Colab** |
+| Tempêtes : rafales maximales des tempêtes 1979-2025 aux bâtiments, rafales de retour 10/50/100 ans | `src/adaptation/tempetes.py` → Drive `donnees/phase1/tempetes_*.csv` | ✅ calculé (1 095 tempêtes, 47 ans) |
 
 Années d'atteinte des niveaux (médiane des 17 simulations) : +2 °C → 2035, +2,7 °C → 2049, +4 °C → 2074.
 
@@ -29,27 +29,20 @@ Variation médiane de la crue décennale journalière (QJXA-10), 67 à 82 simula
 les épisodes orageux de quelques heures, et l'incertitude dépasse le signal. L'évolution de l'aléa inondation y
 sera donc pilotée aussi par les pluies extrêmes (cumul maximal sur 1 jour et sur 5 jours d'Explore2-ADAMONT).
 
-## À faire de votre côté : extraire les projections journalières (option a)
+## À faire de votre côté : extraire les projections journalières
 
-Le serveur public du CNRM ne répond pas depuis l'environnement cloud, mais il est ouvert sans compte depuis un
-poste classique.
+Ouvrir `notebooks/01_extraction_explore2.ipynb` dans Google Colab (bouton dans le README) et exécuter les
+cellules dans l'ordre. Le notebook monte Google Drive, récupère le code sur GitHub, vérifie que le serveur du
+CNRM répond, liste les fichiers retenus puis extrait. Tout est écrit dans
+`SaaS adaptation climatique/demo/donnees/explore2/` ; en cas de coupure, relancer : la reprise est automatique.
 
-1. Installer Python 3.10+ puis :
-   `pip install xarray h5netcdf h5py netCDF4 fsspec aiohttp requests pandas pyarrow`
-2. Récupérer `phase1/telecharger_explore2.py` (branche `claude/enrich-demo-instances-oncka4`).
-3. Vérifier ce qui sera extrait (quelques minutes) :
-   `python3 telecharger_explore2.py --lister`
-   → affiche le nombre de fichiers par variable et écrit `explore2_fichiers_retenus.csv`.
-   Si aucun fichier n'est reconnu, envoyez ce CSV et la sortie du script : l'arborescence du serveur
-   aura changé et j'adapterai le filtre.
-4. Lancer l'extraction : `python3 telecharger_explore2.py`
-   Durée : plusieurs heures. Le script reprend où il s'est arrêté si on le relance.
-5. Déposer `explore2_pilotes.parquet` sur Google Drive et me donner son nom : je le lis directement.
+Si le serveur du CNRM refuse aussi Colab (il filtre certains hébergeurs cloud), lancer le même script depuis un
+ordinateur, en écrivant dans le dossier Drive synchronisé :
+`python3 phase1/telecharger_explore2.py --dossier "<Drive>/SaaS adaptation climatique/demo/donnees/explore2"`.
 
 Ce que le script extrait : 17 simulations × (historique 1976-2005 + RCP8.5 2006-2100) × variables journalières
 corrigées (températures max/min/moyenne, précipitations, vent moyen, humidité relative, humidité des sols SIM2),
-uniquement aux mailles de 8 km qui contiennent les 228 bâtiments des pilotes. Les fichiers nationaux ne sont
-lus qu'à distance (ou en fichier temporaire supprimé aussitôt).
+uniquement aux mailles de 8 km qui contiennent les 228 bâtiments des pilotes.
 
 ## Premiers résultats : tempêtes (C3S, ERA5, 1979-2025, maille 0,25°)
 

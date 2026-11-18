@@ -14,6 +14,26 @@ climatique va aggraver un bâti peu ou pas rénové.
 > Il ne mesure pas l'état réel des bâtiments (sanitaires, toitures, moisissures…), qui
 > n'est pas disponible en données ouvertes.
 
+## Démonstrateur « adaptation climatique des collectivités » (en cours)
+
+Impacts du changement climatique sur le patrimoine bâti de 5 communes pilotes (L'Aiguillon-la-Presqu'île,
+Lacanau, Landiras, Gonfaron, Carcassonne), selon la TRACC (Explore2 RCP8.5 par niveaux de réchauffement).
+
+| Où | Quoi |
+|---|---|
+| **GitHub** (ce dépôt) | Tout le code : `src/adaptation/` (TRACC, extrêmes, crues, tempêtes), `phase0/`, `phase1/`, `notebooks/`, la démo marimo |
+| **Google Drive** `SaaS adaptation climatique/demo/donnees/` | Toutes les données récupérées et calculées (`instances_demo/`, `phase0/`, `phase1/`, `explore2/`) |
+| **Google Colab** | Exécution des scripts longs, qui écrivent directement dans le Drive |
+| **molab** | Démo marimo interactive, ouverte depuis le bouton du README |
+
+Notebooks Colab :
+
+| Notebook | Rôle |
+|---|---|
+| [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MarcoDamz/bati-scolaire-climat/blob/claude/enrich-demo-instances-oncka4/notebooks/01_extraction_explore2.ipynb) `notebooks/01_extraction_explore2.ipynb` | Projections climatiques journalières Explore2-ADAMONT aux bâtiments pilotes → `donnees/explore2/` |
+
+Notes de travail : `docs/phase0_faisabilite.md`, `docs/phase1_climat.md`.
+
 ## Architecture
 
 ```
