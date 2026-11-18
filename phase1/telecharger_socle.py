@@ -175,15 +175,22 @@ def extraire(url, d):
 
 # ------------------------------------------------------------------ pilotage
 def tester_acces(endpoint=ENDPOINT, delai=30):
+    """Vérifie que le stockage répond et que la liste anonyme du dépôt est autorisée ; affiche un diagnostic précis."""
+    url = f"{endpoint}/{BUCKET}"
     try:
-        r = requests.get(f"{endpoint}/{BUCKET}", params={"list-type": "2", "prefix": PREFIXE, "max-keys": "1"},
-                         timeout=delai)
-        r.raise_for_status()
-        print(f"Stockage data.gouv accessible ({r.status_code}).")
-        return True
+        r = requests.get(url, params={"list-type": "2", "prefix": PREFIXE, "max-keys": "5"}, timeout=delai)
     except requests.RequestException as e:
-        print(f"Stockage data.gouv inaccessible depuis cette machine : {e}")
+        print(f"Stockage data.gouv injoignable ({type(e).__name__}) : {e}")
         return False
+    print(f"Réponse du stockage : HTTP {r.status_code}")
+    if r.ok and "<Key>" in r.text:
+        print("Liste du dépôt autorisée.")
+        return True
+    code = re.search(r"<Code>([^<]+)</Code>", r.text)
+    print(f"Liste refusée ou vide{f' ({code.group(1)})' if code else ''}. Début de la réponse :\n{r.text[:500]}")
+    if code and code.group(1) == "AccessDenied":
+        print("Le stockage accepte peut-être la lecture d'un fichier connu mais pas la liste : envoyer ce message.")
+    return False
 
 
 def executer(dossier=".", lister=False, cprcm=False, endpoint=ENDPOINT, nom="socle_pilotes.parquet"):

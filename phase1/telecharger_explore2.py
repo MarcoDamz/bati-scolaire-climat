@@ -2,8 +2,8 @@
 """Extrait les projections climatiques journalières Explore2-2022 (ADAMONT, historique + RCP8.5) aux mailles
 de 8 km qui contiennent les bâtiments des 5 communes pilotes du démonstrateur.
 
-Le serveur public du CNRM (Météo-France) ne demande aucun compte, mais filtre certains hébergeurs cloud :
-`tester_acces()` le vérifie avant de commencer.
+Le serveur public du CNRM (Météo-France) ne demande aucun compte. `tester_acces()` vérifie qu'il répond avant de
+commencer (panne constatée le 18/11/2026 : esg2.umr-cnrm.fr injoignable depuis tout le réseau).
 
 Installation (Python 3.10 ou plus) :
     pip install xarray h5netcdf h5py netCDF4 fsspec aiohttp requests pandas pyarrow
@@ -183,16 +183,17 @@ def extraire(url, nom, var, ch, session):
 
 
 def tester_acces(racine=RACINE, delai=30):
-    """Vérifie que le serveur du CNRM répond depuis cette machine (il filtre certains hébergeurs cloud)."""
+    """Vérifie que le serveur de données du CNRM répond depuis cette machine."""
     try:
         r = requests.get(racine, timeout=delai, headers={"User-Agent": "demonstrateur-adaptation/0.1"})
         r.raise_for_status()
         print(f"Serveur CNRM accessible ({r.status_code}).")
         return True
     except requests.RequestException as e:
-        print(f"Serveur CNRM inaccessible depuis cette machine : {e}\n"
-              "Il filtre certains hébergeurs cloud. Lancez alors le script depuis un poste classique "
-              "(même commande), en écrivant dans le dossier Google Drive synchronisé.")
+        print(f"Serveur CNRM injoignable : {e}\n"
+              "Constaté le 18/11/2026 : esg2.umr-cnrm.fr (climatedata.umr-cnrm.fr) ne répond plus depuis aucun point "
+              "du réseau, alors que www.umr-cnrm.fr répond. Panne côté serveur : réessayer plus tard ou signaler à "
+              "https://www.drias-climat.fr/accompagnement/contact. Source de repli : phase1/telecharger_socle.py.")
         return False
 
 
