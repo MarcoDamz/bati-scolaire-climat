@@ -24,12 +24,13 @@ Lacanau, Landiras, Gonfaron, Carcassonne), selon la TRACC (Explore2 RCP8.5 par n
 | **GitHub** (ce dépôt) | Tout le code : `src/adaptation/` (TRACC, extrêmes, crues, tempêtes), `phase0/`, `phase1/`, `notebooks/`, la démo marimo |
 | **Google Drive** `SaaS adaptation climatique/demo/donnees/` | Toutes les données récupérées et calculées (`instances_demo/`, `phase0/`, `phase1/`, `explore2/`) |
 | **Google Colab** | Exécution des scripts longs, qui écrivent directement dans le Drive |
-| **molab** | Démo marimo interactive, ouverte depuis le bouton du README |
+| **molab** | Démo marimo interactive, ouverte depuis le bouton du README ; elle lit le petit jeu de données final publié sur **GitHub Pages** par le pipeline (le Drive, privé, n'est pas lisible depuis molab) |
 
 Notebooks Colab :
 
 | Notebook | Rôle |
 |---|---|
+| [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MarcoDamz/bati-scolaire-climat/blob/claude/enrich-demo-instances-oncka4/notebooks/00_instances_demo.ipynb) `notebooks/00_instances_demo.ipynb` | 21 instances de démo enrichies (identifiants, CatNat, bâtiments) → `donnees/instances_demo/` |
 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MarcoDamz/bati-scolaire-climat/blob/claude/enrich-demo-instances-oncka4/notebooks/01_extraction_explore2.ipynb) `notebooks/01_extraction_explore2.ipynb` | Projections climatiques journalières Explore2-ADAMONT aux bâtiments pilotes → `donnees/explore2/` |
 
 Notes de travail : `docs/phase0_faisabilite.md`, `docs/phase1_climat.md`.

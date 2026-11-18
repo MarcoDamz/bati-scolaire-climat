@@ -13,6 +13,9 @@ Usage :  python3 enrichir_instances.py                    (stdlib seule ; duckdb
          python3 enrichir_instances.py --no-pm            (ne pas utiliser les fichiers DGFiP des personnes morales)
          python3 enrichir_instances.py --catnat-regions   (agréger aussi les ~4 450 communes d'Occitanie)
          python3 enrichir_instances.py --pm-parquet CHEMIN (fichier locaux_personnes_morales déjà téléchargé)
+         python3 enrichir_instances.py --dossier DOSSIER   (sorties dans DOSSIER, ex. dossier Google Drive)
+         python3 enrichir_instances.py --cache DOSSIER     (cache des téléchargements, ex. disque local de Colab)
+Colab : notebooks/00_instances_demo.ipynb
 Sorties : dossier ./sortie_instances/ (CSV + instances_enrichies.xlsx si openpyxl est installé)
 
 Limites connues des API (constatées en novembre 2026) :
@@ -330,6 +333,9 @@ def arg(nom):
 
 
 def main():
+    global OUT, CACHE
+    OUT = arg("--dossier") or OUT
+    CACHE = arg("--cache") or os.path.join(OUT, "_cache")
     os.makedirs(OUT, exist_ok=True)
     no_bdnb = "--no-bdnb" in sys.argv
     no_pm = "--no-pm" in sys.argv
