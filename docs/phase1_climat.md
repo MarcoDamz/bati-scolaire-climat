@@ -8,7 +8,7 @@
 | Extrêmes : maxima annuels (cumuls sur N jours), loi GEV en super-ensemble (~340 années par niveau) et par chaîne, niveaux de retour 10/30/100/200 ans, fréquence future de l'événement de référence | `src/adaptation/extremes.py` | ✅ testé |
 | Crues : variation du débit journalier maximal annuel et de la crue décennale par niveau, aux stations des pilotes | `src/adaptation/hydro.py` → `resultats/phase1/crues_explore2_tracc.csv` | ✅ calculé |
 | Extraction des projections journalières Explore2-ADAMONT aux mailles des bâtiments pilotes | `phase1/telecharger_explore2.py` | ✅ testé sur un serveur simulé ; **à lancer sur votre poste** |
-| Tempêtes (empreintes C3S) et réanalyse CERRA | — | ⏸ clé Copernicus refusée (voir plus bas) |
+| Tempêtes : rafales maximales des tempêtes 1979-2025 aux bâtiments, rafales de retour 10/50/100 ans | `src/adaptation/tempetes.py` → `resultats/phase1/tempetes_*.csv` | ✅ calculé (1 095 tempêtes, 47 ans) |
 
 Années d'atteinte des niveaux (médiane des 17 simulations) : +2 °C → 2035, +2,7 °C → 2049, +4 °C → 2074.
 
@@ -51,21 +51,30 @@ corrigées (températures max/min/moyenne, précipitations, vent moyen, humidit�
 uniquement aux mailles de 8 km qui contiennent les 228 bâtiments des pilotes. Les fichiers nationaux ne sont
 lus qu'à distance (ou en fichier temporaire supprimé aussitôt).
 
+## Premiers résultats : tempêtes (C3S, ERA5, 1979-2025, maille 0,25°)
+
+| Pilote | Rafale décennale | Cinquantennale | Centennale | Tempêtes les plus fortes |
+|---|---|---|---|---|
+| Lacanau | 119 km/h | 142 km/h | 153 km/h | Martin 27/12/1999 (152), 07/02/1996 (128), Klaus 23/01/2009 (127) |
+| Carcassonne | 117 km/h | 137 km/h | 147 km/h | Klaus 23/01/2009 (150), 07/02/1996 (132), Martin 1999 (127) |
+| L'Aiguillon-la-Presqu'île | 114 km/h | 128 km/h | 134 km/h | Martin 1999 (141), Xynthia 28/02/2010 (126) |
+| Landiras | 106 km/h | 125 km/h | 133 km/h | Martin 1999 (126), Klaus 2009 (125) |
+| Gonfaron | 92 km/h | 96 km/h | 97 km/h | 08/02/1984 (98), 05/03/2017 (95) |
+
+Limites à afficher dans la démo :
+- maille de ~25 km : les pointes locales sont lissées (Martin a dépassé 170 km/h sur le littoral girondin) ;
+- le catalogue suit les tempêtes atlantiques hivernales : les coups de vent méditerranéens (Gonfaron) sont mal captés,
+  d'où des valeurs de retour basses et peu fiables pour ce pilote ;
+- climat actuel seulement : pas de variation avec le niveau TRACC (tendance future des tempêtes jugée peu fiable par le GIEC).
+
 ## Clé Copernicus
 
-La clé saisie est refusée par le Climate Data Store (« Authentication failed »). Vérifier :
-- que c'est bien le *Personal Access Token* affiché sur la page de profil de cds.climate.copernicus.eu ;
-- que les licences des jeux « Windstorm tracks and footprints » et « CERRA » ont été acceptées
-  (onglet *Download* de chaque jeu, en bas de page).
-
-La clé se remplace dans les réglages de l'environnement `bati-scolaire-climat` (secrets réseau,
-hôte `cds.climate.copernicus.eu`, en-tête `PRIVATE-TOKEN`).
+Clé valide et licences acceptées (tempêtes, CERRA) ; enregistrée dans les secrets réseau de l'environnement `bati-scolaire-climat`.
 
 ## Suite de la phase 1, dès réception des données
 
 - Conversion des unités, puis indicateurs par niveau TRACC et par bâtiment : jours > 30/35 °C, nuits tropicales,
   degrés-jours de climatisation, cumuls de pluie 1 j / 5 j et leurs niveaux de retour, sécheresse des sols
   (SWI, pour les argiles), Indice Forêt Météo (feux).
-- Tempêtes : rafales de retour 50 ans actuelles (C3S), évolution du vent moyen extrême d'Explore2 affichée
-  avec sa faible fiabilité.
+- Vent : évolution du vent moyen extrême d'Explore2, affichée avec sa faible fiabilité.
 - Intégration dans le pipeline Dagster et premières vues marimo.
